@@ -1,0 +1,21 @@
+.calculator{
+    background-color: lightgray;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn{
+    width: 20%;
+}
+
+#clear,#delete{
+    width: 45%;
+}
+
+.display{
+    background-color: black;
+    color: white;
+    width: 375px;
+    height: 50px;
+}
