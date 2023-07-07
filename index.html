@@ -11,27 +11,38 @@
     <div class="container">
         <div class="calculator">
             <div class="display">
-                <div class="currentOp"></div>
-                <div class="nextOp"></div>
+                <div class="result">0</div>
+                <div class="currentOp">12+13</div>
             </div>
             <div class="buttons">
-                <button class="btn" id="clear">CE</button>
-                <button class="btn" id="delete">C</button>
-                <button class="btn" id="N1">1</button>
-                <button class="btn" id="N2">2</button>
-                <button class="btn" id="N3">3</button>
-                <button class="btn" id="plus">+</button>
-                <button class="btn" id="N4">4</button>
-                <button class="btn" id="N5">5</button>
-                <button class="btn" id="N6">6</button>
-                <button class="btn" id="minus">-</button>
-                <button class="btn" id="N7">7</button>
-                <button class="btn" id="N8">8</button>
-                <button class="btn" id="N9">9</button>
-                <button class="btn" id="times">x</button>
-                <button class="btn" id="point">.</button>
-                <button class="btn" id="N0">0</button>
-                <button class="btn" id="equal">=</button>
+                <div class="wrapper">
+                    <button class="btn" id="clear">CE</button>
+                    <button class="btn" id="delete">C</button>
+                </div>
+                <div class="wrapper">
+                    <button class="btn" data-number>1</button>
+                    <button class="btn" data-number>2</button>
+                    <button class="btn" data-number>3</button>
+                    <button class="btn" id="plus">+</button>
+                </div>
+                <div class="wrapper">
+                    <button class="btn" data-number>4</button>
+                    <button class="btn" data-number>5</button>
+                    <button class="btn" data-number>6</button>
+                    <button class="btn" id="minus">-</button>
+                </div>
+                <div class="wrapper">
+                    <button class="btn" data-number>7</button>
+                    <button class="btn" data-number>8</button>
+                    <button class="btn" data-number>9</button>
+                    <button class="btn" id="times">x</button>
+                </div>
+                <div class="wrapper">
+                    <button class="btn" id="point">.</button>
+                    <button class="btn" data-number>0</button>
+                    <button class="btn" id="equal">=</button>
+                    <button class="btn" id="divided">/</button>
+                </div>
             </div>
         </div>
     </div>
