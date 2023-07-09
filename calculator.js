@@ -33,6 +33,10 @@ function erase(){
 
 function resetScreen(){
     currentOperation.textContent = ' '
+    result.textContent  = ' '
+    firstNumber = '';
+    currentOperand = null;
+    secondNumber = '';
   }
 
 function add(a, b) {
@@ -61,9 +65,37 @@ function divide(a, b) {
     if(e.key === '/' || e.key === '+' || e.key === '*' || e.key ==='-') setOperation(appendOperand(e.key))
   }
 
-  /*appendOperand(operand){
-    
-  }*/
+  function appendOperand(operand){
+    if (currentOperation.textContent === ' x '  || currentOperation.textContent === ' + ' || currentOperation.textContent === ' - ' || currentOperation.textContent === ' ÷ '){
+        currentOperation.textContent = operand;
+    }
+    switch(operand) {
+        case 'x':
+            firstNumber = currentOperation.textContent;
+            result.textContent = firstNumber;
+            currentOperation.textContent = ' x ';
+            break;
+        case '+':
+            firstNumber = currentOperation.textContent
+            result.textContent = firstNumber;
+            currentOperation.textContent = ' + '
+            break;
+        case '-':
+            firstNumber = currentOperation.textContent
+            result.textContent = firstNumber;
+            currentOperation.textContent = ' - '
+            break;
+        case '÷':
+            firstNumber = currentOperation.textContent
+            result.textContent = firstNumber;
+            currentOperation.textContent = ' / '
+            break;
+      // Add more cases for other operations if needed
+      default:
+        // Handle unrecognized operand
+        break;
+    }
+    }
 
   function setOperation(operand) {
     switch (operand) {
@@ -76,7 +108,7 @@ function divide(a, b) {
         case '-':
             substract(firstNumber,secondNumber);
             break;
-        case '/':
+        case '÷':
             divide(firstNumber, secondNumber);
             break;
       // Add more cases for other operations if needed
@@ -89,15 +121,15 @@ function divide(a, b) {
 clear.addEventListener('click', resetScreen);
 eraseButton.addEventListener('click', erase);
 plusButton.addEventListener('click', function () {
-    setOperation('+');
+    appendOperand('+');
   });
   minusButton.addEventListener('click', function () {
-    setOperation('-');
+    appendOperand('-');
   });
   divideButton.addEventListener('click', function () {
-    setOperation('/');
+    appendOperand('÷');
   });
   timesButton.addEventListener('click', function () {
-    setOperation('x');
+    appendOperand('x');
   });
 numberButtons.addEventListener('click', () => appendNumber(numberButtons.textContent));
