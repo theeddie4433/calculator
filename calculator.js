@@ -1,36 +1,36 @@
-/*
-const plus = document.getElementById('.plus');
-const minus = document.getElementById('.minus');
-const times = document.getElementById('.times');
-const divide = document.getElementById('.divided');
-*/
-const currentOperation = document.querySelector('.currentOp')
-const result = document.querySelector('.result')
-const clear = document.getElementById('.clear');
-const delete = document.getElementById('.delete');
+const plusButton = document.getElementById('plus');
+const minusButton = document.getElementById('minus');
+const timesButton = document.getElementById('times');
+const divideButton = document.getElementById('divided');
+const currentOperation = document.querySelector('.currentOp');
+const result = document.querySelector('.result');
+const clear = document.getElementById('clear');
+const erase = document.getElementById('delete');
 const numberButtons = document.querySelectorAll('[data-number]');
 
-let firstNumber = ''
-let operand = ''
-let secondNumber = ''
+let firstNumber = '';
+let operand = null;
+let secondNumber = '';
+let resetScreen = false ;
 
 window.addEventListener('keydown', handleKeyboardInput);
 
-clear.addEventListener('click', handleClearClick);
-delete.addEventListener('click', handleDeleteClick);
+
 
 
 numberButtons.forEach((button) =>
   button.addEventListener('click', () => appendNumber(button.textContent))
 );
 
-
-appendNumber(number){
-    if (firstNumber === '') {
-
+function appendNumber(number) {
+    if (operand === null) {
+      firstNumber += number;
+      currentOperation.textContent = `${firstNumber}`;
+    } else {
+      secondNumber += number;
+      currentOperation.textContent = `${firstNumber} ${operand} ${secondNumber}`;
     }
-}
-
+  }
 
 function add(a, b) {
     return a + b
@@ -57,6 +57,18 @@ function add(a, b) {
     if(e.key === '/' || e.key === '+' || e.key === '*' || e.key ==='-') setOperation(appendOperand(e.key))
   }
 
-  setOperation(operand){
+  appendOperand(operand){
 
   }
+
+  setOperation(operand){
+
+    if (operand == "+") 
+  }
+
+clear.addEventListener('click', handleClearClick);
+erase.addEventListener('click', handleDeleteClick);
+plus.addEventListener('click', () => setOperation(plus.textContent));
+minus.addEventListener('click', () => setOperation(minus.textContent));
+divide.addEventListener('click', () => setOperation(divide.textContent));
+times.addEventListener('click', () => setOperation(times.textContent));
