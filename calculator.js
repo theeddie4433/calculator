@@ -5,48 +5,52 @@ const divideButton = document.getElementById('divided');
 const currentOperation = document.querySelector('.currentOp');
 const result = document.querySelector('.result');
 const clear = document.getElementById('clear');
-const erase = document.getElementById('delete');
+const eraseButton = document.getElementById('delete');
 const numberButtons = document.querySelectorAll('[data-number]');
 
 let firstNumber = '';
 let currentOperand = null;
 let secondNumber = '';
-let resetScreen = false ;
+let shouldResetScreen = false ;
 
 window.addEventListener('keydown', handleKeyboardInput);
 
-
-
-
-numberButtons.forEach((button) =>
+numberButtons.forEach((button) => {
   button.addEventListener('click', () => appendNumber(button.textContent))
-  );
+});
 
 function appendNumber(number) {
-    if (currentOperand === null) {
-      firstNumber += number;
-      currentOperation.textContent = `${firstNumber}`;
-    } else {
-      secondNumber += number;
-      currentOperation.textContent = `${firstNumber} ${operand} ${secondNumber}`;
-    }
+    if (currentOperation.textContent === '0' || shouldResetScreen)
+    resetScreen()
+    currentOperation.textContent += number
   }
 
-    function add(a, b) {
-        return a + b
-    }
+function erase(){
+   let currentOperationErrased = currentOperation.textContent;
+   currentOperationErrased = currentOperationErrased.slice(0,-1);
+   currentOperation.textContent = currentOperationErrased;
+}
+
+function resetScreen(){
+    currentOperation.textContent = ' '
+  }
+
+function add(a, b) {
+    return a + b
+}
   
-    function substract(a, b) {
-        return a - b
-    }
+function substract(a, b) {
+    return a - b
+}
   
-    function multiply(a, b) {
-        return a * b
-    }
+function multiply(a, b) {
+    return a * b
+}
   
-    function divide(a, b) {
-        return a / b
-    }
+function divide(a, b) {
+    if (a === 0) return "error"
+    return a / b
+}
 
   function handleKeyboardInput(e){
     if(e.key >= 0 && e.key <= 9) appendNumber(e.key)
@@ -63,14 +67,18 @@ function appendNumber(number) {
 
   function setOperation(operand) {
     switch (operand) {
-      case 'x':
-        multiply(firstNumber, secondNumber);
-        result.textContent = multiply(firstNumber, secondNumber);
-        break;
-      case '+':
-        add(firstNumber, secondNumber);
-        result.textContent = add(firstNumber, secondNumber);
-        break;
+        case 'x':
+            multiply(firstNumber, secondNumber);
+            break;
+        case '+':
+            add(firstNumber, secondNumber);
+            break;
+        case '-':
+            substract(firstNumber,secondNumber);
+            break;
+        case '/':
+            divide(firstNumber, secondNumber);
+            break;
       // Add more cases for other operations if needed
       default:
         // Handle unrecognized operand
@@ -78,10 +86,18 @@ function appendNumber(number) {
     }
   }
 
-//clear.addEventListener('click', handleClearClick);
-//erase.addEventListener('click', handleDeleteClick);
-plus.addEventListener('click', () => setOperation(plus.textContent));
-minus.addEventListener('click', () => setOperation(minus.textContent));
-divide.addEventListener('click', () => setOperation(divide.textContent));
-times.addEventListener('click', () => setOperation(times.textContent));
-numberButtons.addEventListener('click', appendNumber(numberButtons.textContent));
+clear.addEventListener('click', resetScreen);
+eraseButton.addEventListener('click', erase);
+plusButton.addEventListener('click', function () {
+    setOperation('+');
+  });
+  minusButton.addEventListener('click', function () {
+    setOperation('-');
+  });
+  divideButton.addEventListener('click', function () {
+    setOperation('/');
+  });
+  timesButton.addEventListener('click', function () {
+    setOperation('x');
+  });
+numberButtons.addEventListener('click', () => appendNumber(numberButtons.textContent));
