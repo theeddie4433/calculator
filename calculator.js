@@ -2,14 +2,14 @@ const plusButton = document.getElementById('plus');
 const minusButton = document.getElementById('minus');
 const timesButton = document.getElementById('times');
 const divideButton = document.getElementById('divided');
-const currentOperation = document.querySelector('.currentOp');
-const result = document.querySelector('.result');
-const clear = document.getElementById('clear');
+const currentOperationDisplay = document.querySelector('.currentOp');
+const resultDisplay = document.querySelector('.result');
+const clearButton = document.getElementById('clear');
 const eraseButton = document.getElementById('delete');
 const numberButtons = document.querySelectorAll('[data-number]');
 
 let firstNumber = '';
-let currentOperand = null;
+let currentOperation = null;
 let secondNumber = '';
 let shouldResetScreen = false ;
 
@@ -20,24 +20,30 @@ numberButtons.forEach((button) => {
 });
 
 function appendNumber(number) {
-    if (currentOperation.textContent === '0' || shouldResetScreen)
+    if (currentOperationDisplay.textContent === '0' || shouldResetScreen)
     resetScreen()
-    currentOperation.textContent += number
+    currentOperationDisplay.textContent += number
   }
 
 function erase(){
-   let currentOperationErrased = currentOperation.textContent;
+   let currentOperationErrased = currentOperationDisplay.textContent;
    currentOperationErrased = currentOperationErrased.slice(0,-1);
-   currentOperation.textContent = currentOperationErrased;
+   currentOperationDisplay.textContent = currentOperationErrased;
+}
+
+function clear(){
+  currentOperationDisplay.textContent = '';
+  resultDisplay.textContent = '';
+  firstNumber = '';
+  currentOperation = null;
+  secondNumber = '';
+  shouldResetScreen = false ;
 }
 
 function resetScreen(){
-    currentOperation.textContent = ' '
-    result.textContent  = ' '
-    firstNumber = '';
-    currentOperand = null;
-    secondNumber = '';
-  }
+  currentOperationDisplay.textContent = ' '
+  shouldResetScreen = false;
+}
 
 function add(a, b) {
     return a + b
@@ -65,71 +71,55 @@ function divide(a, b) {
     if(e.key === '/' || e.key === '+' || e.key === '*' || e.key ==='-') setOperation(appendOperand(e.key))
   }
 
-  function appendOperand(operand){
-    if (currentOperation.textContent === ' x '  || currentOperation.textContent === ' + ' || currentOperation.textContent === ' - ' || currentOperation.textContent === ' ÷ '){
-        currentOperation.textContent = operand;
-    }
-    switch(operand) {
-        case 'x':
-            firstNumber = currentOperation.textContent;
-            result.textContent = firstNumber;
-            currentOperation.textContent = ' x ';
-            break;
-        case '+':
-            firstNumber = currentOperation.textContent
-            result.textContent = firstNumber;
-            currentOperation.textContent = ' + '
-            break;
-        case '-':
-            firstNumber = currentOperation.textContent
-            result.textContent = firstNumber;
-            currentOperation.textContent = ' - '
-            break;
-        case '÷':
-            firstNumber = currentOperation.textContent
-            result.textContent = firstNumber;
-            currentOperation.textContent = ' / '
-            break;
-      // Add more cases for other operations if needed
-      default:
-        // Handle unrecognized operand
-        break;
-    }
-    }
-
-  function setOperation(operand) {
-    switch (operand) {
-        case 'x':
-            multiply(firstNumber, secondNumber);
-            break;
-        case '+':
-            add(firstNumber, secondNumber);
-            break;
-        case '-':
-            substract(firstNumber,secondNumber);
-            break;
-        case '÷':
-            divide(firstNumber, secondNumber);
-            break;
-      // Add more cases for other operations if needed
-      default:
-        // Handle unrecognized operand
-        break;
-    }
+function setOperation(operand) {
+  if (currentOperation !== null){
+  evaluate()
+  }else{
+  firstNumber = currentOperationDisplay.textContent
+  currentOperation = operand
+  resultDisplay.textContent = `${firstNumber} ${currentOperation}`
+  currentOperationDisplay.textContent = ""
+  shouldResetScreen = true
   }
+}
 
-clear.addEventListener('click', resetScreen);
+function evaluate(){
+  secondNumber = currentOperationDisplay.textContent
+  if(firstNumber === 0 && currentOperation === '÷'){
+    currentOperationDisplay = 'ERROR' 
+    resultDisplay = ''
+  } 
+  currentOperationDisplay.textContent = roundResult(
+    operate(currentOperation, firstNumber, secondNumber)
+  )
+  resultDisplay.textContent = `${firstNumber} ${currentOperation} ${secondNumber}`
+  resetScreen = true;
+}
+
+function operate(operand, a, b){
+  a = Number(a)
+  b = Number(b)
+  switch(operand){
+    case '+':
+      return add(a,b);
+  }
+}
+function roundResult(number) {
+  return Math.round(number * 1000) / 1000
+}
+
+clearButton.addEventListener('click', clear);
 eraseButton.addEventListener('click', erase);
 plusButton.addEventListener('click', function () {
-    appendOperand('+');
+    setOperation('+');
   });
   minusButton.addEventListener('click', function () {
-    appendOperand('-');
+    setOperation('-');
   });
   divideButton.addEventListener('click', function () {
-    appendOperand('÷');
+    setOperation('÷');
   });
   timesButton.addEventListener('click', function () {
-    appendOperand('x');
+    setOperation('x');
   });
 numberButtons.addEventListener('click', () => appendNumber(numberButtons.textContent));
