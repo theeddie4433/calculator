@@ -8,6 +8,7 @@ const resultDisplay = document.querySelector('.result');
 const clearButton = document.getElementById('clear');
 const eraseButton = document.getElementById('delete');
 const numberButtons = document.querySelectorAll('[data-number]');
+const pointButton = document.getElementById('point');
 
 let firstNumber = '';
 let currentOperation = null;
@@ -95,6 +96,7 @@ function evaluate(){
     operate(currentOperation, firstNumber, secondNumber)
   )
   resultDisplay.textContent = `${firstNumber} ${currentOperation} ${secondNumber} =` 
+  shouldResetScreen = true
   console.log(firstNumber)
   console.log(secondNumber)
   currentOperation = null
