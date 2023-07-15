@@ -17,6 +17,15 @@ let shouldResetScreen = false ;
 
 window.addEventListener('keydown', handleKeyboardInput);
 
+function handleKeyboardInput(e){
+  if(e.key >= 0 && e.key <= 9) appendNumber(e.key)
+  if(e.key === 'Enter') evaluate()
+  if(e.key === '.') appendPoint()
+  if(e.key === 'Delete') deleteNum()
+  if(e.key === 'Escape') clear()
+  if(e.key === '/' || e.key === '+' || e.key === '*' || e.key ==='-') setOperation(appendOperand(e.key))
+}
+
 numberButtons.forEach((button) => {
   button.addEventListener('click', () => appendNumber(button.textContent))
 });
@@ -25,6 +34,13 @@ function appendNumber(number) {
     if (currentOperationDisplay.textContent === '0' || shouldResetScreen)
       resetScreen()
     currentOperationDisplay.textContent += number
+  }
+
+function appendPoint(){
+    if (shouldResetScreen) resetScreen()
+    if (currentOperationDisplay.textContent === '') currentOperationDisplay.textContent = '0'
+    if (currentOperationDisplay.textContent.includes('.'))return
+    currentOperationDisplay.textContent += '.'
   }
 
 function erase(){
@@ -64,15 +80,6 @@ function divide(a, b) {
     return a / b
 }
 
-  function handleKeyboardInput(e){
-    if(e.key >= 0 && e.key <= 9) appendNumber(e.key)
-    if(e.key === 'return') evaluate()
-    if(e.key === '.') appendPoint()
-    if(e.key === 'Backspace') deleteNum()
-    if(e.key === 'escape') clear()
-    if(e.key === '/' || e.key === '+' || e.key === '*' || e.key ==='-') setOperation(appendOperand(e.key))
-  }
-
 function setOperation(operand) {
   if (currentOperation !== null) evaluate()
   firstNumber = currentOperationDisplay.textContent
@@ -82,7 +89,6 @@ function setOperation(operand) {
   console.log(firstNumber)
   console.log(secondNumber)
   }
-
 
 function evaluate(){
   if (currentOperation === null || shouldResetScreen) return
@@ -97,10 +103,7 @@ function evaluate(){
   )
   resultDisplay.textContent = `${firstNumber} ${currentOperation} ${secondNumber} =` 
   shouldResetScreen = true
-  console.log(firstNumber)
-  console.log(secondNumber)
   currentOperation = null
-  console.log(currentOperation)
 }
 
 function operate(operand, a, b){
@@ -114,6 +117,8 @@ function operate(operand, a, b){
     case '×':
       return multiply(a , b);
     case '÷':
+      if (b === 0)return null
+      else
       return divide(a , b);
 
   }
@@ -122,6 +127,7 @@ function roundResult(number) {
   return Math.round(number * 1000) / 1000
 }
 
+pointButton.addEventListener('click', () => appendPoint())
 equalButton.addEventListener('click', () => evaluate())
 clearButton.addEventListener('click', clear);
 eraseButton.addEventListener('click', erase);
